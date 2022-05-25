@@ -1490,7 +1490,7 @@ module InstructionFetch(
 );
   assign io_instruction = io_coreInstrResp_valid ? io_coreInstrResp_bits_dataResponse : 32'h0; // @[InstructionFetch.scala 26:24]
   assign io_coreInstrReq_valid = io_stall ? 1'h0 : io_coreInstrReq_ready; // @[InstructionFetch.scala 24:31]
-  assign io_coreInstrReq_bits_addrRequest = io_address; // @[InstructionFetch.scala 23:36]
+  assign io_coreInstrReq_bits_addrRequest = {{2'd0}, io_address[31:2]}; // @[InstructionFetch.scala 23:50]
 endmodule
 module HazardUnit(
   input        io_id_ex_memRead,
