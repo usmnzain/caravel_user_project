@@ -1310,18 +1310,18 @@ module SRAM1kb(
   wire  sram_csb0; // @[SRAM1kb.scala 26:20]
   wire  sram_web0; // @[SRAM1kb.scala 26:20]
   wire [3:0] sram_wmask0; // @[SRAM1kb.scala 26:20]
-  wire [9:0] sram_addr0; // @[SRAM1kb.scala 26:20]
+  wire [7:0] sram_addr0; // @[SRAM1kb.scala 26:20]
   wire [31:0] sram_din0; // @[SRAM1kb.scala 26:20]
   wire [31:0] sram_dout0; // @[SRAM1kb.scala 26:20]
   wire  sram_clk1; // @[SRAM1kb.scala 26:20]
   wire  sram_csb1; // @[SRAM1kb.scala 26:20]
-  wire [9:0] sram_addr1; // @[SRAM1kb.scala 26:20]
+  wire [7:0] sram_addr1; // @[SRAM1kb.scala 26:20]
   wire [31:0] sram_dout1; // @[SRAM1kb.scala 26:20]
   reg  validReg; // @[SRAM1kb.scala 18:25]
   wire  _T_2 = io_req_valid & io_req_bits_isWrite; // @[SRAM1kb.scala 53:28]
   wire  _GEN_0 = io_req_valid & io_req_bits_isWrite ? 1'h0 : 1'h1; // @[SRAM1kb.scala 53:52 SRAM1kb.scala 58:18 SRAM1kb.scala 31:16]
   wire  _GEN_6 = io_req_valid & ~io_req_bits_isWrite | _T_2; // @[SRAM1kb.scala 44:46 SRAM1kb.scala 47:14]
-  sram #(.IFILE(""), .ADDR_WIDTH(10)) sram ( // @[SRAM1kb.scala 26:20]
+  sky130_sram_1kbyte_1rw1r_32x256_8 sram ( // @[SRAM1kb.scala 26:20]
     .clk0(sram_clk0),
     .csb0(sram_csb0),
     .web0(sram_web0),
@@ -1340,11 +1340,11 @@ module SRAM1kb(
   assign sram_csb0 = io_req_valid & ~io_req_bits_isWrite ? 1'h0 : _GEN_0; // @[SRAM1kb.scala 44:46 SRAM1kb.scala 48:18]
   assign sram_web0 = io_req_valid & ~io_req_bits_isWrite; // @[SRAM1kb.scala 44:21]
   assign sram_wmask0 = io_req_bits_activeByteLane; // @[SRAM1kb.scala 53:52 SRAM1kb.scala 60:20]
-  assign sram_addr0 = io_req_bits_addrRequest[9:0];
+  assign sram_addr0 = io_req_bits_addrRequest[7:0];
   assign sram_din0 = io_req_bits_dataRequest; // @[SRAM1kb.scala 53:52 SRAM1kb.scala 62:18]
   assign sram_clk1 = 1'h0;
   assign sram_csb1 = 1'h0;
-  assign sram_addr1 = 10'h0;
+  assign sram_addr1 = 8'h0;
   always @(posedge clock) begin
     if (reset) begin // @[SRAM1kb.scala 18:25]
       validReg <= 1'h0; // @[SRAM1kb.scala 18:25]
@@ -4044,10 +4044,10 @@ module Caravel_Top(
   wire [31:0] _GEN_27 = state == 2'h0 ? 32'h0 : _GEN_17; // @[WBGenerator.scala 307:25 WBGenerator.scala 302:45]
   wire [15:0] _GEN_32 = ~puart_io_done ? 16'hffff : 16'hf; // @[WBGenerator.scala 300:23 WBGenerator.scala 402:32]
   wire [31:0] _switch_io_devSel_addr_hit_0_T_1 = 32'hfffff000 & gen_dmem_host_io_wbMasterTransmitter_bits_adr; // @[BusDecoder.scala 45:60]
-  wire  switch_io_devSel_addr_hit_0 = _switch_io_devSel_addr_hit_0_T_1 == 32'h40000000; // @[BusDecoder.scala 45:68]
-  wire [1:0] switch_io_devSel_id_0 = switch_io_devSel_addr_hit_0 ? 2'h0 : 2'h2; // @[BusDecoder.scala 46:19]
-  wire  switch_io_devSel_addr_hit_1 = _switch_io_devSel_addr_hit_0_T_1 == 32'h40002000; // @[BusDecoder.scala 45:68]
-  wire [1:0] switch_io_devSel_id_1 = switch_io_devSel_addr_hit_1 ? 2'h1 : 2'h2; // @[BusDecoder.scala 46:19]
+  wire  switch_io_devSel_addr_hit_0 = _switch_io_devSel_addr_hit_0_T_1 == 32'h40002000; // @[BusDecoder.scala 45:68]
+  wire [1:0] switch_io_devSel_id_0 = switch_io_devSel_addr_hit_0 ? 2'h1 : 2'h2; // @[BusDecoder.scala 46:19]
+  wire  switch_io_devSel_addr_hit_1 = _switch_io_devSel_addr_hit_0_T_1 == 32'h40000000; // @[BusDecoder.scala 45:68]
+  wire [1:0] switch_io_devSel_id_1 = switch_io_devSel_addr_hit_1 ? 2'h0 : 2'h2; // @[BusDecoder.scala 46:19]
   wire [1:0] _switch_io_devSel_T = switch_io_devSel_addr_hit_1 ? switch_io_devSel_id_1 : 2'h2; // @[Mux.scala 98:16]
   WishboneHost gen_imem_host ( // @[WBGenerator.scala 158:29]
     .clock(gen_imem_host_clock),
